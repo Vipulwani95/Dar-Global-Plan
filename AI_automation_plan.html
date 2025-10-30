@@ -1,0 +1,2237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dar Global - Automation Architecture & Implementation Plan</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #2c3e50;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            color: white;
+            padding: 60px 40px;
+            text-align: center;
+        }
+        
+        .header h1 {
+            font-size: 3em;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+        
+        .header p {
+            font-size: 1.3em;
+            opacity: 0.9;
+        }
+        
+        .content {
+            padding: 40px;
+        }
+        
+        .section {
+            margin-bottom: 60px;
+        }
+        
+        .section-title {
+            font-size: 2.2em;
+            color: #1e3c72;
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 4px solid #667eea;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .section-title::before {
+            content: '';
+            width: 8px;
+            height: 40px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 4px;
+        }
+        
+        .executive-summary {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+            padding: 30px;
+            border-radius: 15px;
+            margin-bottom: 40px;
+        }
+        
+        .executive-summary h3 {
+            font-size: 1.8em;
+            margin-bottom: 15px;
+        }
+        
+        .architecture-diagram {
+            background: #f8f9fa;
+            padding: 30px;
+            border-radius: 15px;
+            margin: 30px 0;
+            border: 2px solid #e9ecef;
+        }
+        
+        .flow-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 20px;
+            margin: 20px 0;
+        }
+        
+        .flow-box {
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            flex: 1;
+            min-width: 200px;
+            text-align: center;
+            border-left: 5px solid #667eea;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        
+        .flow-box:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+        }
+        
+        .flow-box h4 {
+            color: #1e3c72;
+            font-size: 1.3em;
+            margin-bottom: 10px;
+        }
+        
+        .flow-box p {
+            color: #666;
+            font-size: 0.95em;
+        }
+        
+        .arrow {
+            font-size: 2em;
+            color: #667eea;
+        }
+        
+        .tool-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+            margin: 30px 0;
+        }
+        
+        .tool-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 6px 20px rgba(0,0,0,0.15);
+            transition: transform 0.3s;
+        }
+        
+        .tool-card:hover {
+            transform: scale(1.05);
+        }
+        
+        .tool-card h4 {
+            font-size: 1.5em;
+            margin-bottom: 15px;
+        }
+        
+        .tool-card .spec {
+            margin: 10px 0;
+            padding-left: 20px;
+            position: relative;
+        }
+        
+        .tool-card .spec::before {
+            content: '→';
+            position: absolute;
+            left: 0;
+        }
+        
+        .automation-list {
+            background: #f8f9fa;
+            padding: 30px;
+            border-radius: 15px;
+            margin: 20px 0;
+        }
+        
+        .automation-item {
+            background: white;
+            padding: 20px;
+            margin: 15px 0;
+            border-radius: 10px;
+            border-left: 5px solid #f5576c;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.08);
+        }
+        
+        .automation-item h4 {
+            color: #1e3c72;
+            margin-bottom: 10px;
+            font-size: 1.2em;
+        }
+        
+        .automation-item ul {
+            margin-left: 20px;
+            color: #666;
+        }
+        
+        .automation-item ul li {
+            margin: 5px 0;
+        }
+        
+        .timeline {
+            position: relative;
+            padding: 20px 0;
+        }
+        
+        .timeline-item {
+            padding: 20px;
+            margin: 20px 0;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            margin-left: 30px;
+            border-left: 5px solid #667eea;
+        }
+        
+        .timeline-item h4 {
+            color: #1e3c72;
+            font-size: 1.3em;
+            margin-bottom: 10px;
+        }
+        
+        .timeline-item .duration {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            display: inline-block;
+            font-size: 0.9em;
+            margin-bottom: 10px;
+        }
+        
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin: 30px 0;
+        }
+        
+        .metric-card {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+            padding: 25px;
+            border-radius: 12px;
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+        
+        .metric-card .number {
+            font-size: 3em;
+            font-weight: bold;
+            margin: 10px 0;
+        }
+        
+        .metric-card .label {
+            font-size: 1.1em;
+            opacity: 0.95;
+        }
+        
+        .integration-matrix {
+            overflow-x: auto;
+            margin: 30px 0;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+        
+        table th {
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            color: white;
+            padding: 15px;
+            text-align: left;
+        }
+        
+        table td {
+            padding: 15px;
+            border-bottom: 1px solid #e9ecef;
+        }
+        
+        table tr:hover {
+            background: #f8f9fa;
+        }
+        
+        .tech-stack {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin: 20px 0;
+        }
+        
+        .tech-badge {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 25px;
+            font-weight: 600;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.2);
+        }
+        
+        .risk-analysis {
+            background: #fff3cd;
+            border-left: 5px solid #ffc107;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+        }
+        
+        .risk-analysis h4 {
+            color: #856404;
+            margin-bottom: 15px;
+        }
+        
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2em;
+            }
+            
+            .flow-container {
+                flex-direction: column;
+            }
+            
+            .arrow {
+                transform: rotate(90deg);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🏢 Dar Global</h1>
+            <p>End-to-End Automation Architecture & Implementation Strategy</p>
+            <p style="font-size: 1em; margin-top: 10px; opacity: 0.8;">Real Estate Operations Transformation</p>
+        </div>
+        
+        <div class="content">
+            <div class="executive-summary">
+                <h3>📊 Executive Summary</h3>
+                <p>This comprehensive automation plan will transform Dar Global's sales, marketing, and operational workflows by integrating AI-powered solutions with existing systems (Power BI, Salesforce, Oracle, Dropbox, Trello). Expected outcomes include 70% reduction in manual tasks, 50% faster lead response times, and 40% improvement in conversion rates through intelligent automation and real-time analytics.</p>
+            </div>
+            
+            <div class="section">
+                <h2 class="section-title">🎯 Current System Analysis</h2>
+                <div class="tool-grid">
+                    <div class="tool-card">
+                        <h4>📊 Power BI</h4>
+                        <div class="spec">Current: Data visualization and reporting</div>
+                        <div class="spec">Gap: Limited cross-system data consolidation</div>
+                        <div class="spec">Solution: Unified ETL pipelines with automated insights</div>
+                    </div>
+                    <div class="tool-card">
+                        <h4>☁️ Dropbox</h4>
+                        <div class="spec">Current: File storage only</div>
+                        <div class="spec">Gap: No automated workflows</div>
+                        <div class="spec">Solution: Event-driven automation</div>
+                    </div>
+                    <div class="tool-card">
+                        <h4>📋 Trello</h4>
+                        <div class="spec">Current: Manual task updates</div>
+                        <div class="spec">Gap: No cross-platform sync</div>
+                        <div class="spec">Solution: Bidirectional API integration</div>
+                    </div>
+                    <div class="tool-card">
+                        <h4>📞 Salesforce</h4>
+                        <div class="spec">Current: Manual lead entry</div>
+                        <div class="spec">Gap: Delayed follow-ups</div>
+                        <div class="spec">Solution: AI-powered lead routing</div>
+                    </div>
+                    <div class="tool-card">
+                        <h4>💰 Oracle Financials</h4>
+                        <div class="spec">Current: Manual data entry</div>
+                        <div class="spec">Gap: Reconciliation delays</div>
+                        <div class="spec">Solution: Automated sync & tracking</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="section">
+                <h2 class="section-title">🏗️ Automation Architecture</h2>
+                <div class="architecture-diagram">
+                    <h3 style="text-align: center; color: #1e3c72; margin-bottom: 30px;">End-to-End Lead & Sales Automation Flow</h3>
+                    
+                    <div style="background: white; padding: 25px; border-radius: 12px; margin-bottom: 25px; border-left: 5px solid #667eea;">
+                        <h4 style="color: #1e3c72; margin-bottom: 15px;">📥 Stage 1: Lead Capture & Instant Response (0-5 minutes)</h4>
+                        <div style="display: flex; gap: 15px; flex-wrap: wrap; margin-top: 15px;">
+                            <div style="flex: 1; min-width: 200px; background: #f8f9fa; padding: 15px; border-radius: 8px;">
+                                <strong>Sources:</strong><br>
+                                • Website Forms<br>
+                                • WhatsApp Business<br>
+                                • Email Inquiries<br>
+                                • Social Media (Instagram, Facebook, LinkedIn)<br>
+                                • Walk-ins (Manual Entry)<br>
+                                • Broker Referrals
+                            </div>
+                            <div style="flex: 1; min-width: 200px; background: #f8f9fa; padding: 15px; border-radius: 8px;">
+                                <strong>Instant Actions:</strong><br>
+                                • Auto-create Salesforce lead<br>
+                                • Send personalized welcome (Email + WhatsApp)<br>
+                                • Assign to agent (round-robin/location-based)<br>
+                                • Notify agent via Slack/SMS<br>
+                                • Track response time in dashboard<br>
+                                • Log source & campaign attribution
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div style="background: white; padding: 25px; border-radius: 12px; margin-bottom: 25px; border-left: 5px solid #f5576c;">
+                        <h4 style="color: #1e3c72; margin-bottom: 15px;">🤖 Stage 2: AI-Powered Lead Qualification & Scoring</h4>
+                        <div style="display: flex; gap: 15px; flex-wrap: wrap; margin-top: 15px;">
+                            <div style="flex: 1; min-width: 200px; background: #f8f9fa; padding: 15px; border-radius: 8px;">
+                                <strong>Data Enrichment:</strong><br>
+                                • Budget validation<br>
+                                • Location preference<br>
+                                • Timeline urgency<br>
+                                • Property type interest<br>
+                                • Lead source quality score<br>
+                                • Historical interaction data
+                            </div>
+                            <div style="flex: 1; min-width: 200px; background: #f8f9fa; padding: 15px; border-radius: 8px;">
+                                <strong>Scoring & Routing:</strong><br>
+                                • AI score: 0-100<br>
+                                • Hot leads (80-100) → Senior agents<br>
+                                • Warm leads (50-79) → Junior agents<br>
+                                • Cold leads (<50) → Nurture sequence<br>
+                                • Broker-referred → Broker relationship manager<br>
+                                • Campaign-based priority routing
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div style="background: white; padding: 25px; border-radius: 12px; margin-bottom: 25px; border-left: 5px solid #764ba2;">
+                        <h4 style="color: #1e3c72; margin-bottom: 15px;">📞 Stage 3: Multi-Channel Follow-up Automation</h4>
+                        <div style="display: flex; gap: 15px; flex-wrap: wrap; margin-top: 15px;">
+                            <div style="flex: 1; min-width: 200px; background: #f8f9fa; padding: 15px; border-radius: 8px;">
+                                <strong>Email Sequences:</strong><br>
+                                • Day 0: Welcome + property recommendations<br>
+                                • Day 2: Follow-up with case study<br>
+                                • Day 5: Video tour links<br>
+                                • Day 8: Limited offer<br>
+                                • Day 12: Last chance + booking link<br>
+                                • Track: Opens, clicks, responses
+                            </div>
+                            <div style="flex: 1; min-width: 200px; background: #f8f9fa; padding: 15px; border-radius: 8px;">
+                                <strong>WhatsApp Automation:</strong><br>
+                                • Instant property brochure (PDF)<br>
+                                • Appointment confirmations<br>
+                                • Payment reminders<br>
+                                • Post-viewing follow-up<br>
+                                • Status updates (booking, clearance)<br>
+                                • Track: Delivered, read, replied
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div style="background: white; padding: 25px; border-radius: 12px; margin-bottom: 25px; border-left: 5px solid #11998e;">
+                        <h4 style="color: #1e3c72; margin-bottom: 15px;">📊 Stage 4: Real-Time Analytics & Dashboards</h4>
+                        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 15px; margin-top: 15px;">
+                            <div style="background: #f8f9fa; padding: 15px; border-radius: 8px;">
+                                <strong>🎯 Lead Performance Dashboard</strong><br>
+                                • Leads per campaign<br>
+                                • Website vs. broker leads<br>
+                                • Response time by agent<br>
+                                • Lead-to-opportunity conversion<br>
+                                • Source-wise quality score<br>
+                                • Daily/weekly/monthly trends
+                            </div>
+                            <div style="background: #f8f9fa; padding: 15px; border-radius: 8px;">
+                                <strong>👤 Agent Performance Dashboard</strong><br>
+                                • Leads assigned vs. contacted<br>
+                                • Follow-up completion rate<br>
+                                • Meetings booked per agent<br>
+                                • Conversion rate by agent<br>
+                                • Deals closed (1M, 3M, 3M+)<br>
+                                • Average deal closure time
+                            </div>
+                            <div style="background: #f8f9fa; padding: 15px; border-radius: 8px;">
+                                <strong>🤝 Broker Analytics Dashboard</strong><br>
+                                • New brokers onboarded (monthly)<br>
+                                • Active vs. inactive brokers<br>
+                                • Broker-wise deal closures<br>
+                                • Top 10 performing brokers<br>
+                                • Commission payouts tracking<br>
+                                • Broker engagement score
+                            </div>
+                            <div style="background: #f8f9fa; padding: 15px; border-radius: 8px;">
+                                <strong>⏱️ Deal Velocity Tracking</strong><br>
+                                • Closed within 1 month<br>
+                                • Closed within 3 months<br>
+                                • Over 3 months (slow deals)<br>
+                                • Average days to close<br>
+                                • Bottleneck stage analysis<br>
+                                • Revenue forecast by timeline
+                            </div>
+                            <div style="background: #f8f9fa; padding: 15px; border-radius: 8px;">
+                                <strong>📧 Communication Analytics</strong><br>
+                                • Email: Sent, opened, clicked, replied<br>
+                                • WhatsApp: Delivered, read, responded<br>
+                                • Call logs: Duration, outcome<br>
+                                • Meeting: Scheduled, attended, no-show<br>
+                                • Total lead interactions count<br>
+                                • Multi-touch attribution
+                            </div>
+                            <div style="background: #f8f9fa; padding: 15px; border-radius: 8px;">
+                                <strong>🏢 Property & Inventory Dashboard</strong><br>
+                                • Units sold by property<br>
+                                • Units booked (pending payment)<br>
+                                • Available inventory real-time<br>
+                                • Cleared deals vs. pending<br>
+                                • Property-wise conversion rate<br>
+                                • Price vs. demand analysis
+                            </div>
+                            <div style="background: #f8f9fa; padding: 15px; border-radius: 8px;">
+                                <strong>📱 Campaign Performance</strong><br>
+                                • Campaign-wise leads generated<br>
+                                • Cost per lead by campaign<br>
+                                • Conversion rate by campaign<br>
+                                • ROI per campaign<br>
+                                • Website engagement (time, pages)<br>
+                                • A/B test results
+                            </div>
+                            <div style="background: #f8f9fa; padding: 15px; border-radius: 8px;">
+                                <strong>🔄 Broker Network Intelligence</strong><br>
+                                • Newly registered brokers<br>
+                                • Existing brokers (1-month active)<br>
+                                • Overlapping broker assignments<br>
+                                • Brokers selling without campaigns<br>
+                                • Dormant broker reactivation list<br>
+                                • Broker territory mapping
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div style="background: white; padding: 25px; border-radius: 12px; margin-bottom: 25px; border-left: 5px solid #ffc107;">
+                        <h4 style="color: #1e3c72; margin-bottom: 15px;">💰 Stage 5: Deal Closure & Financial Automation</h4>
+                        <div style="display: flex; gap: 15px; flex-wrap: wrap; margin-top: 15px;">
+                            <div style="flex: 1; min-width: 200px; background: #f8f9fa; padding: 15px; border-radius: 8px;">
+                                <strong>Sales Process Automation:</strong><br>
+                                • Auto-generate proposal documents<br>
+                                • Send payment links (email + WhatsApp)<br>
+                                • Track payment status real-time<br>
+                                • Auto-create invoice in Oracle<br>
+                                • Commission calculation (agent + broker)<br>
+                                • Deal closed notification to all stakeholders
+                            </div>
+                            <div style="flex: 1; min-width: 200px; background: #f8f9fa; padding: 15px; border-radius: 8px;">
+                                <strong>Post-Sale Tracking:</strong><br>
+                                • Booking status (Sold/Booked/Cleared)<br>
+                                • Payment milestone tracking<br>
+                                • Document submission status<br>
+                                • Handover date automation<br>
+                                • Customer satisfaction survey<br>
+                                • Referral request automation
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div style="text-align: center; margin-top: 30px;">
+                        <div style="display: inline-block; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 20px 40px; border-radius: 15px; font-size: 1.2em; font-weight: bold;">
+                            📈 All Data Flows Into Power BI for Real-Time Dashboards & Automated Reports
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="section">
+                <h2 class="section-title">🛠️ Technology Stack & Specifications</h2>
+                
+                <div class="tool-grid">
+                    <div class="tool-card">
+                        <h4>Zapier Enterprise</h4>
+                        <div class="spec"><strong>Purpose:</strong> Workflow orchestration</div>
+                        <div class="spec"><strong>Connections:</strong> 5000+ apps</div>
+                        <div class="spec"><strong>Features:</strong> Multi-step Zaps, filters, formatters</div>
+                        <div class="spec"><strong>Integration:</strong> Salesforce, Power BI, Dropbox, Trello, Oracle</div>
+                        <div class="spec"><strong>Cost:</strong> $599/month (50K tasks)</div>
+                    </div>
+                    
+                    <div class="tool-card">
+                        <h4>Make (Integromat)</h4>
+                        <div class="spec"><strong>Purpose:</strong> Complex automation scenarios</div>
+                        <div class="spec"><strong>Features:</strong> Visual workflow builder, error handling</div>
+                        <div class="spec"><strong>Capabilities:</strong> HTTP requests, JSON parsing, loops</div>
+                        <div class="spec"><strong>Use Case:</strong> Data transformation pipelines</div>
+                        <div class="spec"><strong>Cost:</strong> $29/month (10K operations)</div>
+                    </div>
+                    
+                    <div class="tool-card">
+                        <h4>n8n (Self-hosted)</h4>
+                        <div class="spec"><strong>Purpose:</strong> Custom workflow automation</div>
+                        <div class="spec"><strong>Features:</strong> Open-source, extendable</div>
+                        <div class="spec"><strong>Deployment:</strong> AWS EC2 t3.medium</div>
+                        <div class="spec"><strong>Benefits:</strong> Unlimited workflows, data privacy</div>
+                        <div class="spec"><strong>Cost:</strong> $150/month (infrastructure)</div>
+                    </div>
+                    
+                    <div class="tool-card">
+                        <h4>OpenAI GPT-4 API</h4>
+                        <div class="spec"><strong>Purpose:</strong> Email drafting, content generation</div>
+                        <div class="spec"><strong>Model:</strong> GPT-4-turbo</div>
+                        <div class="spec"><strong>Use Cases:</strong> Automated responses, reports</div>
+                        <div class="spec"><strong>Integration:</strong> Python/Node.js middleware</div>
+                        <div class="spec"><strong>Cost:</strong> $0.01 per 1K tokens</div>
+                    </div>
+                    
+                    <div class="tool-card">
+                        <h4>Twilio</h4>
+                        <div class="spec"><strong>Purpose:</strong> WhatsApp/SMS automation</div>
+                        <div class="spec"><strong>Features:</strong> Programmable messaging API</div>
+                        <div class="spec"><strong>Integration:</strong> Webhook-based triggers</div>
+                        <div class="spec"><strong>Use Case:</strong> Instant lead notifications</div>
+                        <div class="spec"><strong>Cost:</strong> $0.0079 per message</div>
+                    </div>
+                    
+                    <div class="tool-card">
+                        <h4>Calendly + Cal.com</h4>
+                        <div class="spec"><strong>Purpose:</strong> Meeting automation</div>
+                        <div class="spec"><strong>Features:</strong> Smart scheduling, reminders</div>
+                        <div class="spec"><strong>Integration:</strong> Salesforce, Google Calendar</div>
+                        <div class="spec"><strong>Automation:</strong> Post-meeting follow-ups</div>
+                        <div class="spec"><strong>Cost:</strong> $16/user/month</div>
+                    </div>
+                    
+                    <div class="tool-card">
+                        <h4>HubSpot Sequences</h4>
+                        <div class="spec"><strong>Purpose:</strong> Email drip campaigns</div>
+                        <div class="spec"><strong>Features:</strong> A/B testing, analytics</div>
+                        <div class="spec"><strong>Personalization:</strong> AI-powered content</div>
+                        <div class="spec"><strong>Integration:</strong> Bi-sync with Salesforce</div>
+                        <div class="spec"><strong>Cost:</strong> $450/month (3 users)</div>
+                    </div>
+                    
+                    <div class="tool-card">
+                        <h4>Airtable Automations</h4>
+                        <div class="spec"><strong>Purpose:</strong> Database + workflows</div>
+                        <div class="spec"><strong>Features:</strong> Linked records, rollups</div>
+                        <div class="spec"><strong>Use Case:</strong> Lead pipeline tracking</div>
+                        <div class="spec"><strong>Automation:</strong> Status-based triggers</div>
+                        <div class="spec"><strong>Cost:</strong> $24/user/month</div>
+                    </div>
+                    
+                    <div class="tool-card">
+                        <h4>Phantombuster</h4>
+                        <div class="spec"><strong>Purpose:</strong> Lead generation automation</div>
+                        <div class="spec"><strong>Sources:</strong> LinkedIn, Instagram, WhatsApp</div>
+                        <div class="spec"><strong>Features:</strong> Data extraction, enrichment</div>
+                        <div class="spec"><strong>Use Case:</strong> Bulk contact scraping</div>
+                        <div class="spec"><strong>Cost:</strong> $69/month</div>
+                    </div>
+                    
+                    <div class="tool-card">
+                        <h4>Power Automate</h4>
+                        <div class="spec"><strong>Purpose:</strong> Microsoft ecosystem integration</div>
+                        <div class="spec"><strong>Features:</strong> Desktop + Cloud flows</div>
+                        <div class="spec"><strong>Integration:</strong> Power BI, SharePoint</div>
+                        <div class="spec"><strong>Use Case:</strong> Report generation automation</div>
+                        <div class="spec"><strong>Cost:</strong> $15/user/month</div>
+                    </div>
+                    
+                    <div class="tool-card">
+                        <h4>Retool</h4>
+                        <div class="spec"><strong>Purpose:</strong> Internal admin dashboards</div>
+                        <div class="spec"><strong>Features:</strong> Low-code app builder</div>
+                        <div class="spec"><strong>Connections:</strong> Direct DB access</div>
+                        <div class="spec"><strong>Use Case:</strong> Custom automation triggers</div>
+                        <div class="spec"><strong>Cost:</strong> $50/user/month</div>
+                    </div>
+                    
+                    <div class="tool-card">
+                        <h4>AWS Lambda + EventBridge</h4>
+                        <div class="spec"><strong>Purpose:</strong> Serverless automation</div>
+                        <div class="spec"><strong>Features:</strong> Event-driven architecture</div>
+                        <div class="spec"><strong>Language:</strong> Python 3.11</div>
+                        <div class="spec"><strong>Use Case:</strong> Custom business logic</div>
+                        <div class="spec"><strong>Cost:</strong> Pay-per-execution (~$50/month)</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="section">
+                <h2 class="section-title">⚙️ Detailed Automation Workflows</h2>
+                
+                <div class="automation-list">
+                    <div class="automation-item">
+                        <h4>1. Lead Capture & Instant Response (0-5 min)</h4>
+                        <ul>
+                            <li><strong>Trigger:</strong> New lead from website, WhatsApp, or social media</li>
+                            <li><strong>Action 1:</strong> Zapier captures lead data → validates email/phone</li>
+                            <li><strong>Action 2:</strong> OpenAI GPT-4 generates personalized welcome email based on lead source</li>
+                            <li><strong>Action 3:</strong> Auto-create Salesforce lead with enriched data (company, location, budget)</li>
+                            <li><strong>Action 4:</strong> Send WhatsApp message via Twilio with property brochure link</li>
+                            <li><strong>Action 5:</strong> Create Trello card in "New Leads" board</li>
+                            <li><strong>Action 6:</strong> Notify assigned sales rep via Slack/Email</li>
+                            <li><strong>Technology:</strong> Zapier + OpenAI API + Twilio + Salesforce API</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="automation-item">
+                        <h4>2. AI-Powered Lead Scoring & Routing</h4>
+                        <ul>
+                            <li><strong>Trigger:</strong> New lead created in Salesforce</li>
+                            <li><strong>Action 1:</strong> AWS Lambda function analyzes lead data (budget, urgency, location)</li>
+                            <li><strong>Action 2:</strong> AI model (trained on historical conversion data) assigns score 0-100</li>
+                            <li><strong>Action 3:</strong> High-priority leads (>80) → Senior sales team via round-robin</li>
+                            <li><strong>Action 4:</strong> Medium leads (50-80) → Junior team with nurture sequence</li>
+                            <li><strong>Action 5:</strong> Low leads (<50) → Automated drip campaign via HubSpot</li>
+                            <li><strong>Technology:</strong> AWS Lambda + Python ML model + Salesforce Assignment Rules</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="automation-item">
+                        <h4>3. Automated Email Sequences with AI Personalization</h4>
+                        <ul>
+                            <li><strong>Trigger:</strong> Lead status = "Contacted" but no response in 48 hours</li>
+                            <li><strong>Day 2:</strong> Follow-up email with case study relevant to lead's industry</li>
+                            <li><strong>Day 5:</strong> Video email showcasing similar properties (auto-generated)</li>
+                            <li><strong>Day 8:</strong> Limited-time offer email (dynamic pricing from Oracle)</li>
+                            <li><strong>Day 12:</strong> "Last chance" email with booking link (Calendly)</li>
+                            <li><strong>Action:</strong> GPT-4 customizes each email based on lead engagement data</li>
+                            <li><strong>Technology:</strong> HubSpot Sequences + OpenAI API + Salesforce</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="automation-item">
+                        <h4>4. Automated Meeting Scheduling & Preparation</h4>
+                        <ul>
+                            <li><strong>Trigger:</strong> Lead clicks "Book Meeting" link</li>
+                            <li><strong>Action 1:</strong> Calendly shows available slots based on sales rep calendar</li>
+                            <li><strong>Action 2:</strong> Upon booking → Auto-send confirmation email + SMS reminder</li>
+                            <li><strong>Action 3:</strong> Create Google Meet link and update Salesforce</li>
+                            <li><strong>Action 4:</strong> 24 hours before → Auto-generate meeting brief (lead history, properties viewed)</li>
+                            <li><strong>Action 5:</strong> 2 hours before → Send reminder to both parties</li>
+                            <li><strong>Action 6:</strong> Post-meeting → Auto-send follow-up email with discussed properties</li>
+                            <li><strong>Technology:</strong> Calendly + Zapier + Salesforce + Google Calendar API</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="automation-item">
+                        <h4>5. Deal Pipeline Automation & Forecasting</h4>
+                        <ul>
+                            <li><strong>Trigger:</strong> Deal stage changes in Salesforce</li>
+                            <li><strong>Action 1:</strong> Update Trello card to matching stage</li>
+                            <li><strong>Action 2:</strong> Auto-generate next steps checklist based on stage</li>
+                            <li><strong>Action 3:</strong> If "Proposal Sent" → Auto-remind after 5 days</li>
+                            <li><strong>Action 4:</strong> If "Negotiation" → Alert manager + create approval workflow</li>
+                            <li><strong>Action 5:</strong> If "Closed Won" → Trigger finance workflow in Oracle</li>
+                            <li><strong>Action 6:</strong> Update Power BI dashboard with real-time pipeline data</li>
+                            <li><strong>Technology:</strong> Salesforce Process Builder + n8n + Oracle API</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="automation-item">
+                        <h4>6. Content Pipeline Automation (Creative Team)</h4>
+                        <ul>
+                            <li><strong>Trigger:</strong> New property listing added to Airtable</li>
+                            <li><strong>Action 1:</strong> Create Trello card in "Content Needed" board</li>
+                            <li><strong>Action 2:</strong> Assign photographer based on location (auto-routing)</li>
+                            <li><strong>Action 3:</strong> Once photos uploaded to Dropbox → Notify designer</li>
+                            <li><strong>Action 4:</strong> AI auto-generates property description using GPT-4</li>
+                            <li><strong>Action 5:</strong> Designer uploads brochure → Auto-share via WhatsApp to sales team</li>
+                            <li><strong>Action 6:</strong> Auto-post to social media (scheduled via Buffer/Hootsuite)</li>
+                            <li><strong>Technology:</strong> Airtable + Dropbox API + OpenAI + Trello + Buffer</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="automation-item">
+                        <h4>7. Financial Tracking & Payment Automation</h4>
+                        <ul>
+                            <li><strong>Trigger:</strong> Deal closed in Salesforce</li>
+                            <li><strong>Action 1:</strong> Auto-create invoice in Oracle Financials</li>
+                            <li><strong>Action 2:</strong> Send payment link via email/WhatsApp</li>
+                            <li><strong>Action 3:</strong> Track payment status in real-time</li>
+                            <li><strong>Action 4:</strong> Upon payment → Update Salesforce + send receipt</li>
+                            <li><strong>Action 5:</strong> Create commission record for sales rep</li>
+                            <li><strong>Action 6:</strong> Update Power BI revenue dashboard</li>
+                            <li><strong>Technology:</strong> Oracle API + Stripe/PayPal + Salesforce + Power BI</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="automation-item">
+                        <h4>8. Real-Time Dashboard & Reporting</h4>
+                        <ul>
+                            <li><strong>Frequency:</strong> Every 15 minutes</li>
+                            <li><strong>Action 1:</strong> AWS Lambda pulls data from Salesforce, Oracle, Trello</li>
+                            <li><strong>Action 2:</strong> Data transformation and cleansing (Python pandas)</li>
+                            <li><strong>Action 3:</strong> Load into Azure SQL Database (Power BI data source)</li>
+                            <li><strong>Action 4:</strong> Power BI auto-refreshes dashboards</li>
+                            <li><strong>Dashboards:</strong> Lead sources, conversion rates, pipeline value, team performance</li>
+                            <li><strong>Technology:</strong> AWS Lambda + Azure SQL + Power BI API</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="automation-item">
+                        <h4>9. AI Chatbot for Lead Qualification (Website)</h4>
+                        <ul>
+                            <li><strong>Platform:</strong> Landbot/Drift/Intercom</li>
+                            <li><strong>Functionality:</strong> Answers FAQs, qualifies leads, books meetings</li>
+                            <li><strong>Integration:</strong> Connected to Salesforce via API</li>
+                            <li><strong>Action 1:</strong> Visitor lands on website → Chatbot greets</li>
+                            <li><strong>Action 2:</strong> Asks qualifying questions (budget, timeline, location preference)</li>
+                            <li><strong>Action 3:</strong> If qualified → Books meeting directly</li>
+                            <li><strong>Action 4:</strong> If not qualified → Adds to nurture campaign</li>
+                            <li><strong>Technology:</strong> Intercom + GPT-4 API + Salesforce</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="automation-item">
+                        <h4>10. Broker Data Management & Communication</h4>
+                        <ul>
+                            <li><strong>Trigger:</strong> Broker uploads data via shared Dropbox folder</li>
+                            <li><strong>Action 1:</strong> n8n monitors folder for new files</li>
+                            <li><strong>Action 2:</strong> Auto-parse CSV/Excel using Python script</li>
+                            <li><strong>Action 3:</strong> Validate data quality (check duplicates, missing fields)</li>
+                            <li><strong>Action 4:</strong> Import clean data into Salesforce/Airtable</li>
+                            <li><strong>Action 5:</strong> Send confirmation email to broker with report</li>
+                            <li><strong>Action 6:</strong> Flag any data issues in Trello for manual review</li>
+                            <li><strong>Technology:</strong> Dropbox API + n8n + Python + Salesforce Bulk API</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="automation-item">
+                        <h4>11. Old Lead Reactivation Campaign</h4>
+                        <ul>
+                            <li><strong>Trigger:</strong> Scheduled monthly (1st of each month)</li>
+                            <li><strong>Action 1:</strong> Query Salesforce for leads inactive >90 days</li>
+                            <li><strong>Action 2:</strong> AI analyzes why lead went cold (no response, budget, timing)</li>
+                            <li><strong>Action 3:</strong> Generate personalized reactivation email for each lead</li>
+                            <li><strong>Action 4:</strong> Offer new properties matching their previous interests</li>
+                            <li><strong>Action 5:</strong> Track responses and update Salesforce status</li>
+                            <li><strong>Technology:</strong> AWS Lambda + OpenAI + Salesforce + HubSpot</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="automation-item">
+                        <h4>12. WhatsApp Business API Integration</h4>
+                        <ul>
+                            <li><strong>Setup:</strong> WhatsApp Business API via Twilio/360Dialog</li>
+                            <li><strong>Use Case 1:</strong> Instant lead notifications to sales team</li>
+                            <li><strong>Use Case 2:</strong> Property brochure sharing (PDF/Images)</li>
+                            <li><strong>Use Case 3:</strong> Appointment reminders and confirmations</li>
+                            <li><strong>Use Case 4:</strong> Payment links and updates</li>
+                            <li><strong>Use Case 5:</strong> Post-purchase follow-ups and feedback</li>
+                            <li><strong>Technology:</strong> Twilio WhatsApp API + Zapier + Salesforce</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="section">
+                <h2 class="section-title">📊 Integration Matrix</h2>
+                <div class="integration-matrix">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>KPI Category</th>
+                                <th>Metric</th>
+                                <th>Current State</th>
+                                <th>Target (3 months)</th>
+                                <th>Target (6 months)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td rowspan="3">Lead Management</td>
+                                <td>Lead Response Time</td>
+                                <td>2-4 hours</td>
+                                <td>&lt; 5 minutes</td>
+                                <td>&lt; 2 minutes</td>
+                            </tr>
+                            <tr>
+                                <td>Lead to Opportunity Conversion</td>
+                                <td>15%</td>
+                                <td>22%</td>
+                                <td>28%</td>
+                            </tr>
+                            <tr>
+                                <td>Leads Processed per Day</td>
+                                <td>50-100</td>
+                                <td>300+</td>
+                                <td>500+</td>
+                            </tr>
+                            <tr>
+                                <td rowspan="3">Sales Efficiency</td>
+                                <td>Average Deal Cycle</td>
+                                <td>45 days</td>
+                                <td>35 days</td>
+                                <td>30 days</td>
+                            </tr>
+                            <tr>
+                                <td>Follow-up Completion Rate</td>
+                                <td>60%</td>
+                                <td>85%</td>
+                                <td>95%</td>
+                            </tr>
+                            <tr>
+                                <td>Meetings Booked per Week</td>
+                                <td>30</td>
+                                <td>60</td>
+                                <td>80</td>
+                            </tr>
+                            <tr>
+                                <td rowspan="2">Operational Efficiency</td>
+                                <td>Manual Data Entry Hours/Week</td>
+                                <td>40 hours</td>
+                                <td>15 hours</td>
+                                <td>5 hours</td>
+                            </tr>
+                            <tr>
+                                <td>Report Generation Time</td>
+                                <td>4 hours</td>
+                                <td>15 minutes</td>
+                                <td>Real-time</td>
+                            </tr>
+                            <tr>
+                                <td rowspan="2">Content Production</td>
+                                <td>Property Listings Published/Week</td>
+                                <td>10</td>
+                                <td>25</td>
+                                <td>40</td>
+                            </tr>
+                            <tr>
+                                <td>Content Creation Time</td>
+                                <td>3 days</td>
+                                <td>1 day</td>
+                                <td>4 hours</td>
+                            </tr>
+                            <tr>
+                                <td rowspan="2">Financial Impact</td>
+                                <td>Revenue per Sales Rep</td>
+                                <td>$500K</td>
+                                <td>$650K</td>
+                                <td>$800K</td>
+                            </tr>
+                            <tr>
+                                <td>Cost per Lead</td>
+                                <td>$150</td>
+                                <td>$100</td>
+                                <td>$75</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            
+            <div class="section">
+                <h2 class="section-title">🎯 Governance & Maintenance</h2>
+                <div class="automation-list">
+                    <div class="automation-item">
+                        <h4>Automation Ownership Model</h4>
+                        <ul>
+                            <li><strong>Automation Champion:</strong> Dedicated role (you) overseeing all automations</li>
+                            <li><strong>Department Liaisons:</strong> One person from Sales, Marketing, Creative, Finance</li>
+                            <li><strong>Weekly Sync:</strong> 30-minute automation review meeting</li>
+                            <li><strong>Escalation Path:</strong> Issues reported in Slack → reviewed within 4 hours</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="automation-item">
+                        <h4>Continuous Improvement Process</h4>
+                        <ul>
+                            <li><strong>Monthly Review:</strong> Analyze metrics, identify optimization opportunities</li>
+                            <li><strong>Quarterly Planning:</strong> Roadmap for new automations based on feedback</li>
+                            <li><strong>A/B Testing:</strong> Test email templates, AI prompts, routing logic</li>
+                            <li><strong>User Feedback:</strong> Monthly survey to all users (5 questions)</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="automation-item">
+                        <h4>System Health Monitoring</h4>
+                        <ul>
+                            <li><strong>Uptime Monitoring:</strong> UptimeRobot checks every 5 minutes</li>
+                            <li><strong>Error Rate Tracking:</strong> Target: &lt;0.5% failure rate</li>
+                            <li><strong>Performance Metrics:</strong> Automation execution time, API response times</li>
+                            <li><strong>Cost Tracking:</strong> Monthly review of all tool usage and costs</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="automation-item">
+                        <h4>Documentation Standards</h4>
+                        <ul>
+                            <li><strong>Workflow Documentation:</strong> Every automation documented in Notion</li>
+                            <li><strong>Change Log:</strong> All modifications tracked with date, reason, impact</li>
+                            <li><strong>Troubleshooting Guides:</strong> Common issues and solutions</li>
+                            <li><strong>API Documentation:</strong> Endpoints, authentication methods, rate limits</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="section">
+                <h2 class="section-title">🚀 Quick Wins (First 30 Days)</h2>
+                <div class="metrics-grid">
+                    <div class="metric-card">
+                        <div class="label">Week 1</div>
+                        <div class="number" style="font-size: 2em;">✅</div>
+                        <div class="label">Lead capture automation live</div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="label">Week 2</div>
+                        <div class="number" style="font-size: 2em;">📧</div>
+                        <div class="label">Automated email sequences</div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="label">Week 3</div>
+                        <div class="number" style="font-size: 2em;">📊</div>
+                        <div class="label">Real-time Power BI dashboards</div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="label">Week 4</div>
+                        <div class="number" style="font-size: 2em;">💬</div>
+                        <div class="label">WhatsApp integration complete</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="section">
+                <h2 class="section-title">📞 Communication & Stakeholder Management</h2>
+                <div class="automation-list">
+                    <div class="automation-item">
+                        <h4>Weekly Status Reports (Every Friday)</h4>
+                        <ul>
+                            <li>Number of automations executed</li>
+                            <li>Time saved vs. manual processes</li>
+                            <li>Issues encountered and resolutions</li>
+                            <li>Upcoming implementations</li>
+                            <li>Sent via email + Slack to leadership</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="automation-item">
+                        <h4>Monthly Business Review (Management)</h4>
+                        <ul>
+                            <li>KPI performance vs. targets</li>
+                            <li>ROI analysis and cost tracking</li>
+                            <li>User adoption metrics</li>
+                            <li>Roadmap for next month</li>
+                            <li>Budget review and forecasting</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="automation-item">
+                        <h4>Department-Specific Check-ins</h4>
+                        <ul>
+                            <li><strong>Sales:</strong> Bi-weekly (lead quality, conversion rates)</li>
+                            <li><strong>Marketing:</strong> Bi-weekly (content pipeline, campaign performance)</li>
+                            <li><strong>Finance:</strong> Monthly (payment tracking, reporting accuracy)</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="section">
+                <h2 class="section-title">🔮 Future Enhancements (Phase 2 - Months 4-12)</h2>
+                <div class="tool-grid">
+                    <div class="tool-card">
+                        <h4>Predictive Analytics</h4>
+                        <div class="spec">ML model to predict deal closure probability</div>
+                        <div class="spec">Budget: $5K for data scientist consultation</div>
+                        <div class="spec">Timeline: Months 6-8</div>
+                    </div>
+                    
+                    <div class="tool-card">
+                        <h4>Voice AI Integration</h4>
+                        <div class="spec">Automated call transcription and analysis</div>
+                        <div class="spec">Tool: Gong.io or Chorus.ai</div>
+                        <div class="spec">Timeline: Months 8-10</div>
+                    </div>
+                    
+                    <div class="tool-card">
+                        <h4>Advanced Lead Scoring</h4>
+                        <div class="spec">Behavioral tracking across website</div>
+                        <div class="spec">Tool: Clearbit + Custom scoring</div>
+                        <div class="spec">Timeline: Months 5-6</div>
+                    </div>
+                    
+                    <div class="tool-card">
+                        <h4>Document Automation</h4>
+                        <div class="spec">Auto-generate contracts, proposals</div>
+                        <div class="spec">Tool: PandaDoc + DocuSign</div>
+                        <div class="spec">Timeline: Months 7-9</div>
+                    </div>
+                    
+                    <div class="tool-card">
+                        <h4>Social Media Listening</h4>
+                        <div class="spec">Track brand mentions, competitor activity</div>
+                        <div class="spec">Tool: Brandwatch or Mention</div>
+                        <div class="spec">Timeline: Months 9-11</div>
+                    </div>
+                    
+                    <div class="tool-card">
+                        <h4>Virtual Property Tours</h4>
+                        <div class="spec">Automated 3D tour generation</div>
+                        <div class="spec">Tool: Matterport integration</div>
+                        <div class="spec">Timeline: Months 10-12</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="section">
+                <h2 class="section-title">✅ Pre-Implementation Checklist</h2>
+                <div class="automation-list">
+                    <div class="automation-item">
+                        <h4>Technical Prerequisites</h4>
+                        <ul>
+                            <li>☐ Salesforce admin access and API enabled</li>
+                            <li>☐ Oracle Financials API credentials</li>
+                            <li>☐ Dropbox Business account with API access</li>
+                            <li>☐ Trello workspace admin access</li>
+                            <li>☐ Power BI Pro licenses for development team</li>
+                            <li>☐ AWS account setup with billing alerts</li>
+                            <li>☐ Domain verification for email sending (SPF, DKIM)</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="automation-item">
+                        <h4>Organizational Prerequisites</h4>
+                        <ul>
+                            <li>☐ Executive sponsorship secured</li>
+                            <li>☐ Budget approved ($51K Year 1)</li>
+                            <li>☐ Department liaisons identified</li>
+                            <li>☐ Training schedule coordinated</li>
+                            <li>☐ Success metrics agreed upon</li>
+                            <li>☐ Change management plan approved</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="automation-item">
+                        <h4>Data Prerequisites</h4>
+                        <ul>
+                            <li>☐ Current data quality audit completed</li>
+                            <li>☐ Duplicate records cleaned up</li>
+                            <li>☐ Standard field mappings documented</li>
+                            <li>☐ Historical data backup created</li>
+                            <li>☐ Data privacy requirements documented</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="section">
+                <h2 class="section-title">📚 Technical Stack Summary</h2>
+                <div class="tech-stack">
+                    <div class="tech-badge">Zapier Enterprise</div>
+                    <div class="tech-badge">Make (Integromat)</div>
+                    <div class="tech-badge">n8n</div>
+                    <div class="tech-badge">OpenAI GPT-4</div>
+                    <div class="tech-badge">AWS Lambda</div>
+                    <div class="tech-badge">AWS EventBridge</div>
+                    <div class="tech-badge">Azure SQL</div>
+                    <div class="tech-badge">Python 3.11</div>
+                    <div class="tech-badge">Node.js</div>
+                    <div class="tech-badge">Salesforce API</div>
+                    <div class="tech-badge">Oracle REST API</div>
+                    <div class="tech-badge">Power BI</div>
+                    <div class="tech-badge">Twilio</div>
+                    <div class="tech-badge">HubSpot</div>
+                    <div class="tech-badge">Airtable</div>
+                    <div class="tech-badge">Calendly</div>
+                    <div class="tech-badge">Intercom</div>
+                    <div class="tech-badge">Phantombuster</div>
+                    <div class="tech-badge">Retool</div>
+                    <div class="tech-badge">Power Automate</div>
+                </div>
+            </div>
+            
+            <div class="section" style="background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%); color: white; padding: 50px; border-radius: 20px; margin-top: 40px;">
+                <h2 style="font-size: 2.5em; margin-bottom: 20px; text-align: center;">🎯 Executive Summary</h2>
+                <div style="font-size: 1.2em; line-height: 1.8;">
+                    <p style="margin-bottom: 20px;">
+                        <strong>Investment Required:</strong> $51,052 (Year 1) | $29,052 (Year 2+)
+                    </p>
+                    <p style="margin-bottom: 20px;">
+                        <strong>Implementation Timeline:</strong> 16 weeks to full production deployment
+                    </p>
+                    <p style="margin-bottom: 20px;">
+                        <strong>Expected ROI:</strong> 300% within 12 months
+                    </p>
+                    <p style="margin-bottom: 20px;">
+                        <strong>Time Savings:</strong> 70% reduction in manual work = 30+ hours/week saved per team
+                    </p>
+                    <p style="margin-bottom: 20px;">
+                        <strong>Revenue Impact:</strong> 40% conversion rate improvement = additional $2M+ annual revenue
+                    </p>
+                    <p style="margin-bottom: 20px;">
+                        <strong>Competitive Advantage:</strong> Fastest response times in market, AI-powered personalization at scale
+                    </p>
+                    <p style="margin-bottom: 0;">
+                        <strong>Risk Level:</strong> Low (proven technologies, phased rollout, comprehensive training)
+                    </p>
+                </div>
+            </div>
+            
+            <div class="section">
+                <h2 class="section-title">📧 Next Steps & Call to Action</h2>
+                <div class="automation-list">
+                    <div class="automation-item">
+                        <h4>Immediate Actions (This Week)</h4>
+                        <ul>
+                            <li>✅ Review this proposal with leadership team</li>
+                            <li>✅ Schedule kick-off meeting with all stakeholders</li>
+                            <li>✅ Approve budget allocation</li>
+                            <li>✅ Assign department liaisons</li>
+                            <li>✅ Grant necessary system access</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="automation-item">
+                        <h4>Week 1 Deliverables (Post-Approval)</h4>
+                        <ul>
+                            <li>📋 Detailed project plan with Gantt chart</li>
+                            <li>📋 System access and credentials documentation</li>
+                            <li>📋 Current state process maps</li>
+                            <li>📋 Development environment setup</li>
+                            <li>📋 Communication plan for organization</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="automation-item">
+                        <h4>Questions or Concerns?</h4>
+                        <ul>
+                            <li>📞 Schedule 1:1 deep-dive sessions with each department</li>
+                            <li>💬 Open Q&A session for all employees</li>
+                            <li>📄 Additional technical documentation available upon request</li>
+                            <li>🎥 Demo of similar implementations (anonymized case studies)</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="section">
+                <h2 class="section-title">🔍 Phase 0: Discovery & Assessment Framework (Weeks 1-12)</h2>
+                <div style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); color: white; padding: 30px; border-radius: 15px; margin-bottom: 30px;">
+                    <h3 style="font-size: 1.8em; margin-bottom: 15px;">Why Deep Discovery Matters</h3>
+                    <p style="font-size: 1.1em; line-height: 1.8;">
+                        Before implementing any automation, a comprehensive 12-week discovery phase is essential to understand existing workflows, identify hidden inefficiencies, audit current automation usage, and uncover cost-saving opportunities through custom development. This prevents redundant implementations and ensures we build on existing infrastructure rather than duplicating efforts.
+                    </p>
+                </div>
+                
+                <div class="automation-list">
+                    <div class="automation-item">
+                        <h4>Week 1-3: Sales Department Deep Dive</h4>
+                        <ul>
+                            <li><strong>Objective:</strong> Shadow sales team to understand lead flow, conversion process, and pain points</li>
+                            <li><strong>Activities:</strong> Attend sales calls, review CRM usage patterns, document manual tasks</li>
+                            <li><strong>Deliverable:</strong> Sales workflow map with automation opportunities (20+ identified)</li>
+                            <li><strong>Key Questions:</strong> What existing automations are in place? Where do leads get stuck? What repetitive tasks consume most time?</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="automation-item">
+                        <h4>Week 4-6: Marketing & Creative Team Analysis</h4>
+                        <ul>
+                            <li><strong>Objective:</strong> Understand content creation pipeline, approval workflows, and distribution channels</li>
+                            <li><strong>Activities:</strong> Observe content production cycle, review tool usage, analyze campaign workflows</li>
+                            <li><strong>Deliverable:</strong> Content pipeline optimization report with bottleneck analysis</li>
+                            <li><strong>Discovery Focus:</strong> Are there existing automation tools we're not leveraging? Can we consolidate redundant tools?</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="automation-item">
+                        <h4>Week 7-9: Finance & Operations Assessment</h4>
+                        <ul>
+                            <li><strong>Objective:</strong> Map financial workflows, payment tracking, reporting processes</li>
+                            <li><strong>Activities:</strong> Review Oracle integration points, audit data accuracy, understand reconciliation process</li>
+                            <li><strong>Deliverable:</strong> Financial automation audit with compliance requirements</li>
+                            <li><strong>Investigation:</strong> Current API usage, data sync frequency, manual intervention points</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="automation-item">
+                        <h4>Week 10-12: Cross-Functional Integration Analysis</h4>
+                        <ul>
+                            <li><strong>Objective:</strong> Identify gaps between departments, data silos, and integration opportunities</li>
+                            <li><strong>Activities:</strong> Map data flow across all systems, conduct stakeholder interviews, audit existing automations</li>
+                            <li><strong>Deliverable:</strong> Comprehensive automation roadmap with prioritized initiatives</li>
+                            <li><strong>Outcome:</strong> Clear picture of what's working, what's missing, and where custom solutions provide ROI</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="section">
+                <h2 class="section-title">💻 Alternative Architecture: Custom In-House Development Strategy</h2>
+                <div style="background: #fff3cd; border-left: 5px solid #ffc107; padding: 25px; border-radius: 10px; margin-bottom: 30px;">
+                    <h3 style="color: #856404; margin-bottom: 15px;">⚡ Cost-Optimization Approach</h3>
+                    <p style="color: #856404; font-size: 1.05em;">
+                        <strong>Key Insight:</strong> After discovery phase, we can evaluate building custom automation solutions using Python/Node.js that replicate expensive SaaS functionality at 70-80% cost reduction. This eliminates vendor lock-in, provides unlimited scalability, and gives complete control over our automation infrastructure.
+                    </p>
+                </div>
+                
+                <div class="tool-grid">
+                    <div class="tool-card" style="background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);">
+                        <h4>Custom Python Automation Framework</h4>
+                        <div class="spec"><strong>Replaces:</strong> Zapier ($7,188/year) + Make ($348/year)</div>
+                        <div class="spec"><strong>Tech Stack:</strong> FastAPI + Celery + Redis + PostgreSQL</div>
+                        <div class="spec"><strong>Development Time:</strong> 8-10 weeks</div>
+                        <div class="spec"><strong>Annual Savings:</strong> $6,500+ (Year 2 onwards)</div>
+                        <div class="spec"><strong>Benefits:</strong> Unlimited workflows, custom logic, no rate limits</div>
+                    </div>
+                    
+                    <div class="tool-card" style="background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);">
+                        <h4>Open-Source AI Integration</h4>
+                        <div class="spec"><strong>Replaces:</strong> OpenAI API ($2,400/year)</div>
+                        <div class="spec"><strong>Tech Stack:</strong> Llama 3 70B (self-hosted) or Claude API</div>
+                        <div class="spec"><strong>Infrastructure:</strong> AWS EC2 g5.2xlarge ($1,200/year)</div>
+                        <div class="spec"><strong>Annual Savings:</strong> $1,200+</div>
+                        <div class="spec"><strong>Benefits:</strong> Data privacy, unlimited usage, fine-tuning capability</div>
+                    </div>
+                    
+                    <div class="tool-card" style="background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);">
+                        <h4>Custom Email Automation System</h4>
+                        <div class="spec"><strong>Replaces:</strong> HubSpot Sequences ($5,400/year)</div>
+                        <div class="spec"><strong>Tech Stack:</strong> Python + AWS SES + SendGrid</div>
+                        <div class="spec"><strong>Development Time:</strong> 6 weeks</div>
+                        <div class="spec"><strong>Annual Savings:</strong> $4,800+</div>
+                        <div class="spec"><strong>Benefits:</strong> Complete control, advanced personalization, no user limits</div>
+                    </div>
+                    
+                    <div class="tool-card" style="background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);">
+                        <h4>Internal Dashboard Platform</h4>
+                        <div class="spec"><strong>Replaces:</strong> Retool ($1,200/year) + Power Automate ($900/year)</div>
+                        <div class="spec"><strong>Tech Stack:</strong> React + Node.js + PostgreSQL</div>
+                        <div class="spec"><strong>Development Time:</strong> 10 weeks</div>
+                        <div class="spec"><strong>Annual Savings:</strong> $1,500+</div>
+                        <div class="spec"><strong>Benefits:</strong> Tailored to exact needs, scalable, maintainable</div>
+                    </div>
+                </div>
+                
+                <h3 style="color: #1e3c72; margin: 40px 0 20px; font-size: 1.8em;">📊 Cost Comparison: SaaS vs. Custom Development</h3>
+                <div class="integration-matrix">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Component</th>
+                                <th>SaaS Cost (Annual)</th>
+                                <th>Custom Dev Cost</th>
+                                <th>Annual Savings</th>
+                                <th>Break-even</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Workflow Automation</td>
+                                <td>$7,536</td>
+                                <td>$10,000 (one-time) + $1,200/year hosting</td>
+                                <td>$6,336/year</td>
+                                <td>18 months</td>
+                            </tr>
+                            <tr>
+                                <td>AI/ML Processing</td>
+                                <td>$2,400</td>
+                                <td>$5,000 (one-time) + $1,200/year</td>
+                                <td>$1,200/year</td>
+                                <td>4 years</td>
+                            </tr>
+                            <tr>
+                                <td>Email Sequences</td>
+                                <td>$5,400</td>
+                                <td>$8,000 (one-time) + $600/year</td>
+                                <td>$4,800/year</td>
+                                <td>20 months</td>
+                            </tr>
+                            <tr>
+                                <td>Dashboards & Tools</td>
+                                <td>$2,100</td>
+                                <td>$12,000 (one-time) + $400/year</td>
+                                <td>$1,700/year</td>
+                                <td>7 years</td>
+                            </tr>
+                            <tr style="background: #e3f2fd; font-weight: bold;">
+                                <td><strong>TOTAL</strong></td>
+                                <td><strong>$17,436/year</strong></td>
+                                <td><strong>$35,000 + $3,400/year</strong></td>
+                                <td><strong>$14,036/year from Year 3</strong></td>
+                                <td><strong>30 months</strong></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            
+            <div class="section">
+                <h2 class="section-title">🏗️ Hybrid Implementation Strategy (Recommended)</h2>
+                <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 30px; border-radius: 15px; margin-bottom: 30px;">
+                    <h3 style="font-size: 1.8em; margin-bottom: 15px;">⚖️ Best of Both Worlds Approach</h3>
+                    <p style="font-size: 1.1em; line-height: 1.8;">
+                        <strong>Phase 1 (Months 1-6):</strong> Use SaaS tools for rapid deployment and immediate ROI while simultaneously building custom solutions in parallel.<br><br>
+                        <strong>Phase 2 (Months 7-12):</strong> Gradually migrate high-volume, repetitive workflows to custom platform while keeping specialized SaaS tools for complex tasks.<br><br>
+                        <strong>Outcome:</strong> 50% cost reduction by Year 2, complete ownership of core automation infrastructure, flexibility to choose best tool for each use case.
+                    </p>
+                </div>
+                
+                <div class="automation-list">
+                    <div class="automation-item">
+                        <h4>Keep SaaS Tools For:</h4>
+                        <ul>
+                            <li>✅ <strong>Salesforce:</strong> Industry-standard CRM with extensive ecosystem</li>
+                            <li>✅ <strong>Power BI:</strong> Enterprise reporting with Microsoft integration</li>
+                            <li>✅ <strong>Twilio:</strong> Reliable SMS/WhatsApp infrastructure</li>
+                            <li>✅ <strong>Calendly:</strong> Meeting scheduling with wide integration support</li>
+                            <li>✅ <strong>Specialized tools</strong> where custom development doesn't provide significant advantage</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="automation-item">
+                        <h4>Build Custom Solutions For:</h4>
+                        <ul>
+                            <li>🔧 <strong>Workflow Orchestration:</strong> High-volume, predictable automation flows</li>
+                            <li>🔧 <strong>Email Sequences:</strong> Unlimited campaigns with custom logic</li>
+                            <li>🔧 <strong>Lead Scoring:</strong> ML models trained on Dar Global's specific data</li>
+                            <li>🔧 <strong>Internal Dashboards:</strong> Role-specific views and custom metrics</li>
+                            <li>🔧 <strong>Data Pipelines:</strong> ETL processes tailored to our data sources</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="section">
+                <h2 class="section-title">👨‍💻 In-House Development Team Structure</h2>
+                <div class="automation-list">
+                    <div class="automation-item">
+                        <h4>Core Team (Months 1-12)</h4>
+                        <ul>
+                            <li><strong>Automation Architect (You):</strong> Full-time, leading both SaaS implementation and custom development</li>
+                            <li><strong>Senior Python Developer:</strong> Contract (6 months), $8K/month for core framework development</li>
+                            <li><strong>DevOps Engineer:</strong> Part-time consultant ($3K/month) for AWS infrastructure</li>
+                            <li><strong>QA Specialist:</strong> Part-time (20 hrs/week) for testing automation workflows</li>
+                            <li><strong>Total Investment:</strong> $66K for 6-month custom development sprint</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="automation-item">
+                        <h4>Long-term Maintenance (Year 2+)</h4>
+                        <ul>
+                            <li><strong>Automation Architect:</strong> Ongoing ownership and optimization</li>
+                            <li><strong>DevOps Support:</strong> $500/month managed services</li>
+                            <li><strong>Development Budget:</strong> $10K/year for enhancements and new features</li>
+                            <li><strong>Total Annual Cost:</strong> $16K (vs. $17K+ in SaaS subscriptions eliminated)</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="section">
+                <h2 class="section-title">📈 Revised ROI with Custom Development</h2>
+                <div class="metrics-grid">
+                    <div class="metric-card">
+                        <div class="label">Year 1 Investment</div>
+                        <div class="number">$95K</div>
+                        <div class="label">SaaS + Custom Dev</div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="label">Year 2 Cost</div>
+                        <div class="number">$22K</div>
+                        <div class="label">50% Reduction</div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="label">Year 3+ Cost</div>
+                        <div class="number">$16K</div>
+                        <div class="label">72% Reduction</div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="label">3-Year Savings</div>
+                        <div class="number">$35K</div>
+                        <div class="label">vs. SaaS Only</div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="label">5-Year Savings</div>
+                        <div class="number">$105K</div>
+                        <div class="label">Compounding Value</div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="label">Strategic Benefit</div>
+                        <div class="number">∞</div>
+                        <div class="label">Full Ownership</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="section">
+                <h2 class="section-title">🎓 Knowledge Transfer & Capability Building</h2>
+                <div class="automation-list">
+                    <div class="automation-item">
+                        <h4>Internal Team Upskilling Strategy</h4>
+                        <ul>
+                            <li><strong>Objective:</strong> Build lasting automation capability within Dar Global, not dependency on external vendors</li>
+                            <li><strong>Training Program:</strong> 3 selected IT team members trained in Python automation (12-week program)</li>
+                            <li><strong>Documentation:</strong> All custom code thoroughly documented with architecture diagrams</li>
+                            <li><strong>Knowledge Base:</strong> Internal wiki with troubleshooting guides, API references, workflow templates</li>
+                            <li><strong>Outcome:</strong> Team can maintain, enhance, and scale automation independently</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="automation-item">
+                        <h4>Continuous Learning & Innovation</h4>
+                        <ul>
+                            <li>Monthly automation review sessions to identify new opportunities</li>
+                            <li>Quarterly evaluation of emerging AI/automation tools and technologies</li>
+                            <li>Annual reassessment of build vs. buy decisions for each component</li>
+                            <li>Participation in real estate tech communities for best practices</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
+            <div style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); color: white; padding: 40px; border-radius: 20px; margin: 40px 0;">
+                <h2 style="font-size: 2.2em; margin-bottom: 20px; text-align: center;">🎯 Final Recommendation</h2>
+                <div style="font-size: 1.15em; line-height: 1.9;">
+                    <p style="margin-bottom: 20px;">
+                        <strong>Phase 0 (Weeks 1-12):</strong> Comprehensive discovery across all departments to audit existing systems, identify current automation usage, and map true workflow requirements.
+                    </p>
+                    <p style="margin-bottom: 20px;">
+                        <strong>Phase 1 (Months 4-9):</strong> Deploy SaaS-based quick wins for immediate ROI while simultaneously building custom automation framework.
+                    </p>
+                    <p style="margin-bottom: 20px;">
+                        <strong>Phase 2 (Months 10-16):</strong> Migrate high-volume workflows to custom platform, reducing SaaS costs by 50%.
+                    </p>
+                    <p style="margin-bottom: 0;">
+                        <strong>Long-term Vision:</strong> Dar Global owns a proprietary automation platform tailored to real estate workflows, providing competitive advantage and reducing operational costs by 70% compared to pure SaaS approach.
+                    </p>
+                </div>
+            </div>
+            
+            <div style="text-align: center; padding: 40px; background: #f8f9fa; border-radius: 15px; margin-top: 40px;">
+                <h3 style="color: #1e3c72; font-size: 2em; margin-bottom: 20px;">Ready to Transform Dar Global's Operations?</h3>
+                <p style="font-size: 1.3em; color: #666; margin-bottom: 30px;">
+                    Let's turn manual processes into automated workflows and drive unprecedented growth.
+                </p>
+                <div style="display: flex; gap: 20px; justify-content: center; flex-wrap: wrap;">
+                    <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 15px 40px; border-radius: 30px; font-size: 1.2em; font-weight: bold;">
+                        🚀 Let's Begin
+                    </div>
+                    <div style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); color: white; padding: 15px 40px; border-radius: 30px; font-size: 1.2em; font-weight: bold;">
+                        📅 Schedule Demo
+                    </div>
+                </div>
+            </div>
+            
+            <div style="text-align: center; padding: 30px; color: #999; font-size: 0.9em; margin-top: 40px; border-top: 2px solid #e9ecef;">
+                <p><strong>Document Prepared By:</strong> Automation Implementation Team</p>
+                <p><strong>Date:</strong> October 30, 2025</p>
+                <p><strong>Version:</strong> 1.0</p>
+                <p><strong>Contact:</strong> Available for questions, clarifications, and detailed technical discussions</p>
+                <p style="margin-top: 20px;">
+                    <em>This document contains proprietary information and is confidential. Distribution limited to Dar Global stakeholders only.</em>
+                </p>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // Add smooth scrolling
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+        
+        // Add fade-in animation on scroll
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+        
+        const observer = new IntersectionObserver(function(entries) {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+        
+        document.querySelectorAll('.section').forEach(section => {
+            section.style.opacity = '0';
+            section.style.transform = 'translateY(20px)';
+            section.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+            observer.observe(section);
+        });
+    </script>
+</body>
+</html>
+                        <thead>
+                            <tr>
+                                <th>Source System</th>
+                                <th>Target System</th>
+                                <th>Integration Method</th>
+                                <th>Frequency</th>
+                                <th>Data Flow</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Website Forms</td>
+                                <td>Salesforce</td>
+                                <td>Zapier Webhook</td>
+                                <td>Real-time</td>
+                                <td>Lead data (name, email, phone, property interest)</td>
+                            </tr>
+                            <tr>
+                                <td>Salesforce</td>
+                                <td>Power BI</td>
+                                <td>AWS Lambda + Azure SQL</td>
+                                <td>Every 15 min</td>
+                                <td>Leads, opportunities, closed deals, activities</td>
+                            </tr>
+                            <tr>
+                                <td>Salesforce</td>
+                                <td>Trello</td>
+                                <td>Zapier Bi-directional</td>
+                                <td>Real-time</td>
+                                <td>Deal stages, tasks, comments</td>
+                            </tr>
+                            <tr>
+                                <td>Oracle Financials</td>
+                                <td>Salesforce</td>
+                                <td>REST API + n8n</td>
+                                <td>Daily at 6 AM</td>
+                                <td>Payment status, invoices, commissions</td>
+                            </tr>
+                            <tr>
+                                <td>Dropbox</td>
+                                <td>Trello</td>
+                                <td>Dropbox Webhooks + n8n</td>
+                                <td>Real-time</td>
+                                <td>File uploads trigger Trello cards</td>
+                            </tr>
+                            <tr>
+                                <td>Airtable</td>
+                                <td>Salesforce</td>
+                                <td>Airtable API + Zapier</td>
+                                <td>Real-time</td>
+                                <td>Property listings, inventory data</td>
+                            </tr>
+                            <tr>
+                                <td>WhatsApp (Twilio)</td>
+                                <td>Salesforce</td>
+                                <td>Webhook + AWS Lambda</td>
+                                <td>Real-time</td>
+                                <td>Conversation logs, lead responses</td>
+                            </tr>
+                            <tr>
+                                <td>Calendly</td>
+                                <td>Salesforce + Google Calendar</td>
+                                <td>Native Integration</td>
+                                <td>Real-time</td>
+                                <td>Meeting bookings, attendees, outcomes</td>
+                            </tr>
+                            <tr>
+                                <td>HubSpot</td>
+                                <td>Salesforce</td>
+                                <td>Native Bi-sync</td>
+                                <td>Every 5 min</td>
+                                <td>Email engagement, sequences, analytics</td>
+                            </tr>
+                            <tr>
+                                <td>Power BI</td>
+                                <td>Email (Leadership)</td>
+                                <td>Power Automate</td>
+                                <td>Daily/Weekly</td>
+                                <td>Automated PDF reports via email</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            
+            <div class="section">
+                <h2 class="section-title">📈 Expected ROI & Impact Metrics</h2>
+                <div class="metrics-grid">
+                    <div class="metric-card">
+                        <div class="label">Time Saved</div>
+                        <div class="number">70%</div>
+                        <div class="label">Manual Tasks Eliminated</div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="label">Response Time</div>
+                        <div class="number">5 min</div>
+                        <div class="label">From 2-4 Hours</div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="label">Conversion Rate</div>
+                        <div class="number">+40%</div>
+                        <div class="label">Improvement Expected</div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="label">Lead Processing</div>
+                        <div class="number">500+</div>
+                        <div class="label">Leads/Day Capacity</div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="label">Data Accuracy</div>
+                        <div class="number">99%</div>
+                        <div class="label">Error Reduction</div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="label">Cost Savings</div>
+                        <div class="number">$150K</div>
+                        <div class="label">Annual (FTE equivalent)</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="section">
+                <h2 class="section-title">🗓️ Implementation Timeline</h2>
+                <div class="timeline">
+                    <div class="timeline-item">
+                        <div class="duration">Week 1-2: Discovery & Setup</div>
+                        <h4>Phase 1: Foundation</h4>
+                        <ul>
+                            <li>Audit current systems and data quality</li>
+                            <li>Document all existing workflows</li>
+                            <li>Set up development accounts (Zapier, Make, n8n)</li>
+                            <li>Configure AWS infrastructure (Lambda, EventBridge, RDS)</li>
+                            <li>Establish API connections to Salesforce, Oracle, Dropbox</li>
+                            <li>Create test environments for safe deployment</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="timeline-item">
+                        <div class="duration">Week 3-4: Core Automations</div>
+                        <h4>Phase 2: Lead Management</h4>
+                        <ul>
+                            <li>Build lead capture automation (web forms → Salesforce)</li>
+                            <li>Implement AI lead scoring model</li>
+                            <li>Configure automated email sequences in HubSpot</li>
+                            <li>Set up WhatsApp integration via Twilio</li>
+                            <li>Create instant notification workflows</li>
+                            <li>Test with 10-20 sample leads</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="timeline-item">
+                        <div class="duration">Week 5-6: Sales Enablement</div>
+                        <h4>Phase 3: Sales Automation</h4>
+                        <ul>
+                            <li>Integrate Calendly for meeting scheduling</li>
+                            <li>Build automated follow-up sequences</li>
+                            <li>Create Trello-Salesforce bidirectional sync</li>
+                            <li>Implement AI-powered email generation</li>
+                            <li>Set up deal pipeline automation</li>
+                            <li>Train sales team on new workflows</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="timeline-item">
+                        <div class="duration">Week 7-8: Content & Creative</div>
+                        <h4>Phase 4: Marketing Automation</h4>
+                        <ul>
+                            <li>Build content pipeline in Airtable</li>
+                            <li>Automate Dropbox → Trello workflows</li>
+                            <li>Implement AI content generation for property descriptions</li>
+                            <li>Set up social media auto-posting</li>
+                            <li>Create broker data management system</li>
+                            <li>Configure file organization automations</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="timeline-item">
+                        <div class="duration">Week 9-10: Financial Integration</div>
+                        <h4>Phase 5: Finance & Reporting</h4>
+                        <ul>
+                            <li>Integrate Oracle Financials with Salesforce</li>
+                            <li>Automate invoice generation and payment tracking</li>
+                            <li>Build commission calculation workflows</li>
+                            <li>Create Power BI data pipeline (ETL)</li>
+                            <li>Design real-time dashboards for leadership</li>
+                            <li>Set up automated report generation</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="timeline-item">
+                        <div class="duration">Week 11-12: Testing & Training</div>
+                        <h4>Phase 6: Quality Assurance</h4>
+                        <ul>
+                            <li>Comprehensive end-to-end testing</li>
+                            <li>Fix bugs and optimize workflows</li>
+                            <li>Conduct team training sessions (Sales, Marketing, Creative)</li>
+                            <li>Create documentation and SOPs</li>
+                            <li>Set up monitoring and alerting systems</li>
+                            <li>Prepare for production launch</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="timeline-item">
+                        <div class="duration">Week 13: Go Live</div>
+                        <h4>Phase 7: Production Deployment</h4>
+                        <ul>
+                            <li>Deploy all automations to production</li>
+                            <li>Monitor system performance 24/7</li>
+                            <li>Provide on-call support for first week</li>
+                            <li>Collect feedback from all departments</li>
+                            <li>Quick iterations based on real-world usage</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="timeline-item">
+                        <div class="duration">Week 14-16: Optimization</div>
+                        <h4>Phase 8: Continuous Improvement</h4>
+                        <ul>
+                            <li>Analyze automation performance metrics</li>
+                            <li>Identify bottlenecks and optimization opportunities</li>
+                            <li>Build additional workflows based on team requests</li>
+                            <li>Enhance AI models with real data</li>
+                            <li>Establish governance and maintenance protocols</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="section">
+                <h2 class="section-title">🎓 Training & Adoption Strategy</h2>
+                <div class="automation-list">
+                    <div class="automation-item">
+                        <h4>Sales Team Training (2 sessions x 2 hours)</h4>
+                        <ul>
+                            <li><strong>Session 1:</strong> Lead management automation, Calendly, email sequences</li>
+                            <li><strong>Session 2:</strong> Salesforce updates, Trello integration, WhatsApp best practices</li>
+                            <li><strong>Materials:</strong> Video tutorials, quick reference guides, FAQ document</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="automation-item">
+                        <h4>Marketing Team Training (1 session x 2 hours)</h4>
+                        <ul>
+                            <li><strong>Topics:</strong> Content pipeline, AI content generation, social media automation</li>
+                            <li><strong>Focus:</strong> How to trigger workflows, approve AI-generated content</li>
+                            <li><strong>Materials:</strong> Content workflow diagram, approval checklists</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="automation-item">
+                        <h4>Creative Team Training (1 session x 1.5 hours)</h4>
+                        <ul>
+                            <li><strong>Topics:</strong> Dropbox automation, Trello task management, file organization</li>
+                            <li><strong>Focus:</strong> How files trigger workflows, naming conventions</li>
+                            <li><strong>Materials:</strong> File naming guide, Dropbox structure diagram</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="automation-item">
+                        <h4>Leadership Dashboard Training (1 session x 1 hour)</h4>
+                        <ul>
+                            <li><strong>Topics:</strong> Power BI dashboards, KPIs, real-time insights</li>
+                            <li><strong>Focus:</strong> How to interpret metrics, drill-down capabilities</li>
+                            <li><strong>Materials:</strong> Dashboard user guide, metric definitions</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="automation-item">
+                        <h4>Ongoing Support</h4>
+                        <ul>
+                            <li>Dedicated Slack channel for automation questions</li>
+                            <li>Weekly office hours (first month)</li>
+                            <li>Monthly review meetings to identify improvement areas</li>
+                            <li>Comprehensive documentation repository (Notion/Confluence)</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="section">
+                <h2 class="section-title">⚠️ Risk Analysis & Mitigation</h2>
+                <div class="risk-analysis">
+                    <h4>Risk 1: System Integration Failures</h4>
+                    <p><strong>Mitigation:</strong> Build redundancy with multiple integration paths (Zapier + n8n). Implement comprehensive error logging and alerting. Set up fallback manual processes for critical workflows.</p>
+                </div>
+                
+                <div class="risk-analysis">
+                    <h4>Risk 2: Data Quality Issues</h4>
+                    <p><strong>Mitigation:</strong> Implement data validation at every integration point. Create automated data quality reports. Schedule monthly data audits. Use AI to flag anomalies.</p>
+                </div>
+                
+                <div class="risk-analysis">
+                    <h4>Risk 3: User Adoption Resistance</h4>
+                    <p><strong>Mitigation:</strong> Involve key stakeholders from each team in design phase. Demonstrate quick wins early. Provide incentives for automation usage. Make training engaging and role-specific.</p>
+                </div>
+                
+                <div class="risk-analysis">
+                    <h4>Risk 4: API Rate Limits</h4>
+                    <p><strong>Mitigation:</strong> Implement exponential backoff and retry logic. Use batch processing where possible. Monitor API usage dashboards. Upgrade to higher-tier plans proactively.</p>
+                </div>
+                
+                <div class="risk-analysis">
+                    <h4>Risk 5: Security & Compliance</h4>
+                    <p><strong>Mitigation:</strong> Use OAuth 2.0 for all integrations. Encrypt data in transit and at rest. Implement role-based access control. Regular security audits. GDPR compliance for lead data handling.</p>
+                </div>
+            </div>
+            
+            <div class="section">
+                <h2 class="section-title">💰 Cost Breakdown & Budget</h2>
+                <div class="integration-matrix">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Tool/Service</th>
+                                <th>Monthly Cost</th>
+                                <th>Annual Cost</th>
+                                <th>Purpose</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Zapier Enterprise</td>
+                                <td>$599</td>
+                                <td>$7,188</td>
+                                <td>Primary workflow orchestration</td>
+                            </tr>
+                            <tr>
+                                <td>Make (Integromat)</td>
+                                <td>$29</td>
+                                <td>$348</td>
+                                <td>Complex scenarios</td>
+                            </tr>
+                            <tr>
+                                <td>n8n (AWS hosting)</td>
+                                <td>$150</td>
+                                <td>$1,800</td>
+                                <td>Custom workflows</td>
+                            </tr>
+                            <tr>
+                                <td>OpenAI API</td>
+                                <td>$200</td>
+                                <td>$2,400</td>
+                                <td>AI content generation</td>
+                            </tr>
+                            <tr>
+                                <td>Twilio (WhatsApp + SMS)</td>
+                                <td>$150</td>
+                                <td>$1,800</td>
+                                <td>Messaging automation</td>
+                            </tr>
+                            <tr>
+                                <td>HubSpot Marketing (3 users)</td>
+                                <td>$450</td>
+                                <td>$5,400</td>
+                                <td>Email sequences</td>
+                            </tr>
+                            <tr>
+                                <td>Airtable Pro (5 users)</td>
+                                <td>$120</td>
+                                <td>$1,440</td>
+                                <td>Database + automation</td>
+                            </tr>
+                            <tr>
+                                <td>Calendly (5 users)</td>
+                                <td>$80</td>
+                                <td>$960</td>
+                                <td>Meeting scheduling</td>
+                            </tr>
+                            <tr>
+                                <td>Phantombuster</td>
+                                <td>$69</td>
+                                <td>$828</td>
+                                <td>Lead generation</td>
+                            </tr>
+                            <tr>
+                                <td>Power Automate (5 users)</td>
+                                <td>$75</td>
+                                <td>$900</td>
+                                <td>Microsoft integration</td>
+                            </tr>
+                            <tr>
+                                <td>Retool (2 users)</td>
+                                <td>$100</td>
+                                <td>$1,200</td>
+                                <td>Internal dashboards</td>
+                            </tr>
+                            <tr>
+                                <td>AWS (Lambda + RDS + S3)</td>
+                                <td>$200</td>
+                                <td>$2,400</td>
+                                <td>Infrastructure</td>
+                            </tr>
+                            <tr>
+                                <td>Intercom (Chatbot)</td>
+                                <td>$99</td>
+                                <td>$1,188</td>
+                                <td>Website lead qualification</td>
+                            </tr>
+                            <tr>
+                                <td>Monitoring & DevOps</td>
+                                <td>$100</td>
+                                <td>$1,200</td>
+                                <td>Uptime monitoring, logs</td>
+                            </tr>
+                            <tr style="background: #e3f2fd; font-weight: bold;">
+                                <td><strong>TOTAL MONTHLY</strong></td>
+                                <td><strong>$2,421</strong></td>
+                                <td><strong>$29,052</strong></td>
+                                <td><strong>Recurring Costs</strong></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                
+                <h3 style="margin-top: 30px; color: #1e3c72;">One-Time Implementation Costs</h3>
+                <div class="integration-matrix">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Item</th>
+                                <th>Cost</th>
+                                <th>Description</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Implementation & Development</td>
+                                <td>$15,000</td>
+                                <td>16 weeks of setup, configuration, custom development</td>
+                            </tr>
+                            <tr>
+                                <td>Training & Documentation</td>
+                                <td>$3,000</td>
+                                <td>All team training sessions, video creation, documentation</td>
+                            </tr>
+                            <tr>
+                                <td>Data Migration & Cleanup</td>
+                                <td>$2,000</td>
+                                <td>Historical data cleanup and migration</td>
+                            </tr>
+                            <tr>
+                                <td>Testing & QA</td>
+                                <td>$2,000</td>
+                                <td>Comprehensive testing across all workflows</td>
+                            </tr>
+                            <tr style="background: #e3f2fd; font-weight: bold;">
+                                <td><strong>TOTAL ONE-TIME</strong></td>
+                                <td><strong>$22,000</strong></td>
+                                <td><strong>Implementation Investment</strong></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                
+                <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 30px; border-radius: 15px; margin-top: 30px;">
+                    <h3 style="font-size: 1.8em; margin-bottom: 15px;">💡 Total Investment Summary</h3>
+                    <p style="font-size: 1.2em; margin: 10px 0;"><strong>Year 1 Total Cost:</strong> $51,052 ($22K one-time + $29K annual)</p>
+                    <p style="font-size: 1.2em; margin: 10px 0;"><strong>Year 2+ Annual Cost:</strong> $29,052</p>
+                    <p style="font-size: 1.2em; margin: 10px 0;"><strong>ROI Timeline:</strong> 4-6 months (based on time savings = $150K/year)</p>
+                    <p style="font-size: 1.2em; margin: 10px 0;"><strong>Break-even:</strong> Month 5</p>
+                </div>
+            </div>
+            
+            <div class="section">
+                <h2 class="section-title">🔧 Technical Architecture Deep Dive</h2>
+                
+                <h3 style="color: #1e3c72; margin: 30px 0 20px;">Data Flow Architecture</h3>
+                <div class="architecture-diagram">
+                    <pre style="background: white; padding: 20px; border-radius: 10px; overflow-x: auto; font-size: 0.9em;">
+┌─────────────────────────────────────────────────────────────────────┐
+│                         DATA SOURCES                                 │
+├─────────────────────────────────────────────────────────────────────┤
+│ Web Forms │ WhatsApp │ Email │ Social Media │ Manual Entry          │
+└──────┬──────────────────────────────────────────────────────────────┘
+       │
+       ▼
+┌─────────────────────────────────────────────────────────────────────┐
+│                    INTEGRATION LAYER                                 │
+├─────────────────────────────────────────────────────────────────────┤
+│  Zapier (Webhooks) │ n8n (Custom Logic) │ AWS Lambda (Processing)  │
+└──────┬──────────────────────────────────────────────────────────────┘
+       │
+       ▼
+┌─────────────────────────────────────────────────────────────────────┐
+│                      AI PROCESSING                                   │
+├─────────────────────────────────────────────────────────────────────┤
+│  Lead Scoring │ Content Generation │ Sentiment Analysis            │
+│  (Python ML)  │  (GPT-4 API)      │  (NLP Models)                 │
+└──────┬──────────────────────────────────────────────────────────────┘
+       │
+       ▼
+┌─────────────────────────────────────────────────────────────────────┐
+│                    CORE SYSTEMS                                      │
+├─────────────────────────────────────────────────────────────────────┤
+│  Salesforce CRM  │  Oracle Finance  │  Airtable DB                 │
+└──────┬──────────────────────────────────────────────────────────────┘
+       │
+       ▼
+┌─────────────────────────────────────────────────────────────────────┐
+│                     DATA WAREHOUSE                                   │
+├─────────────────────────────────────────────────────────────────────┤
+│  Azure SQL Database (Centralized analytics data)                    │
+└──────┬──────────────────────────────────────────────────────────────┘
+       │
+       ▼
+┌─────────────────────────────────────────────────────────────────────┐
+│                    PRESENTATION LAYER                                │
+├─────────────────────────────────────────────────────────────────────┤
+│  Power BI Dashboards  │  Email Reports  │  Slack Notifications     │
+└─────────────────────────────────────────────────────────────────────┘
+                    </pre>
+                </div>
+                
+                <h3 style="color: #1e3c72; margin: 30px 0 20px;">Security Architecture</h3>
+                <div class="automation-list">
+                    <div class="automation-item">
+                        <h4>Authentication & Authorization</h4>
+                        <ul>
+                            <li><strong>OAuth 2.0:</strong> All API integrations use OAuth tokens (no stored passwords)</li>
+                            <li><strong>Role-Based Access:</strong> Salesforce profiles control data access</li>
+                            <li><strong>API Key Management:</strong> Stored in AWS Secrets Manager, rotated quarterly</li>
+                            <li><strong>MFA Required:</strong> For all admin accounts and sensitive systems</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="automation-item">
+                        <h4>Data Protection</h4>
+                        <ul>
+                            <li><strong>Encryption in Transit:</strong> TLS 1.3 for all API calls</li>
+                            <li><strong>Encryption at Rest:</strong> AES-256 for database storage</li>
+                            <li><strong>Data Retention:</strong> Automated deletion of PII after 24 months (GDPR compliant)</li>
+                            <li><strong>Backup Strategy:</strong> Daily automated backups, 30-day retention</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="automation-item">
+                        <h4>Monitoring & Compliance</h4>
+                        <ul>
+                            <li><strong>Audit Logs:</strong> All automation actions logged with timestamps</li>
+                            <li><strong>Uptime Monitoring:</strong> PagerDuty alerts for system failures</li>
+                            <li><strong>Performance Tracking:</strong> New Relic for application monitoring</li>
+                            <li><strong>Compliance:</strong> GDPR, CCPA data handling protocols</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="section">
+                <h2 class="section-title">📋 Success Metrics & KPIs</h2>
+                <div class="integration-matrix">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>KPI Category</th>
+                                <th>Metric</th>
+                                <th>Current State</th>
+                                <th>Target (3 months)</th>
+                                <th>Target (6 months)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td rowspan="3">Lead Management</td>
+                                <td>Lead Response Time</td>
+                                <td>2-4 hours</td>
+                                <td>&lt; 5 minutes</td>
+                                <td>&lt; 2 minutes</td>
+                            </tr>
+                            <tr>
+                                <td>Lead to Opportunity Conversion</td>
+                                <td>15%</td>
+                                <td>22%</td>
+                                <td>28%</td>
+                            </tr>
+                            <tr>
+                                <td>Leads Processed per Day</td>
+                                <td>50-100</td>
+                                <td>300+</td>
+                                <td>500+</td>
+                            </tr>
+                            <tr>
+                                <td rowspan="3">Sales Efficiency</td>
+                                <td>Average Deal Cycle</td>
+                                <td>45 days</td>
+                                <td>35 days</td>
+                                <td>30 days</td>
+                            </tr>
+                            <tr>
+                                <td>Follow-up Completion Rate</td>
+                                <td>60%</td>
+                                <td>85%</td>
+                                <td>95%</td>
+                            </tr>
+                            <tr>
+                                <td>Meetings Booked per Week</td>
+                                <td>30</td>
+                                <td>60</td>
+                                <td>80</td>
+                            </tr>
+                            <tr>
+                                <td rowspan="2">Operational Efficiency</td>
+                                <td>Manual Data Entry Hours/Week</td>
+                                <td>40 hours</td>
+                                <td>15 hours</td>
+                                <td>5 hours</td>
+                            </tr>
+                            <tr>
+                                <td>Report Generation Time</td>
+                                <td>4 hours</td>
+                                <td>15 minutes</td>
+                                <td>Real-time</td>
+                            </tr>
+                            <tr>
+                                <td rowspan="2">Content Production</td>
+                                <td>Property Listings Published/Week</td>
+                                <td>10</td>
+                                <td>25</td>
+                                <td>40</td>
+                            </tr>
+                            <tr>
+                                <td>Content Creation Time</td>
+                                <td>3 days</td>
+                                <td>1 day</td>
+                                <td>4 hours</td>
+                            </tr>
+                            <tr>
+                                <td rowspan="2">Financial Impact</td>
+                                <td>Revenue per Sales Rep</td>
+                                <td>$500K</td>
+                                <td>$650K</td>
+                                <td>$800K</td>
+                            </tr>
+                            <tr>
+                                <td>Cost per Lead</td>
+                                <td>$150</td>
+                                <td>$100</td>
+                                <td>$75</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
